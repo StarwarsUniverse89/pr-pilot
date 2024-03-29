@@ -58,7 +58,8 @@ def handle_pull_request_review_comment(payload):
     {comment_text}
     ```
 
-    Read the pull request, fulfill the user's request and return the response to the user's comment.
+    Read the pull request and understand the user's comment in context. If the user asks for changes,
+    write those changes directly to the file system. Address your response directly to the user.
     """
         Task.schedule(title=command, user_request=user_request, comment_id=comment_id,
                       comment_url=comment_url, pr_number=pr_number, head=head, base=base,
