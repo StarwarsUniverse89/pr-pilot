@@ -38,6 +38,10 @@ All issues, PR, files and code you have access to are in the context of the `{gi
 - Keep your answers short and to the point, unless the user asks for a detailed explanation
 - If your answer is based on internet research, make sure to mention the source  
 
+# How to handle PR review comments
+If you receive a comment on a diff hunk, apply those changes directly to the file system.
+Never return the code changes in your response.
+
 # How to handle files
 - Reading files is EXPENSIVE. Only read the files you really need to solve the task
 - When writing files, ALWAYS write the entire file content, do not leave anything out.
@@ -224,7 +228,7 @@ def create_pr_pilot_agent():
         [SystemMessagePromptTemplate(prompt=PromptTemplate(input_variables=['github_project', 'project_info'], template=system_message)),
          HumanMessagePromptTemplate(prompt=PromptTemplate(input_variables=['user_request'], template=template)),
          MessagesPlaceholder(variable_name='agent_scratchpad'),
-         SystemMessage('Fulfill the user request autonomously and provide the response, without asking for further input. If anything fails along the way, abort and provide a reason.')]
+         SystemMessage('Fulfill the user request autonomously and respond to them, without asking for further input. If anything fails along the way, abort and provide a reason.')]
     )
     agent = create_openai_functions_agent(llm, tools, prompt)
     return AgentExecutor(agent=agent, tools=tools, verbose=settings.DEBUG)

@@ -151,7 +151,7 @@ class TaskEngine:
             self.task.save()
         comment = self.task.create_response_comment(final_response.strip().replace("/pilot", ""))
         TaskEvent.add(actor="assistant", action="comment_on_issue", target=comment.id,
-                      message=f"Commented on [Issue {self.task.issue_number}]({comment.html_url})")
+                      message=f"Commented on [Issue {self.task.issue_number if self.task.issue_number else self.task.pr_number}]({comment.html_url})")
         self.create_bill()
         return final_response
 

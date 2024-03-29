@@ -22,6 +22,7 @@ def handle_pull_request_review_comment(payload):
     repository = payload['repository']['full_name']
     installation_id = payload['installation']['id']
     diff = payload['comment']['diff_hunk']
+    file_path = payload['comment']['path']
 
     # Extract comment text
     comment_text = payload['comment']['body']
@@ -45,21 +46,21 @@ def handle_pull_request_review_comment(payload):
             return JsonResponse({'status': 'ok', 'message': 'PR comment processed'})
         comment.create_reaction("eyes")
         user_request = f"""
-    The Github user `{commenter_username}` mentioned you in a comment on a pull request review:
+    The Github user `{commenter_username}` mentioned you in a comment on a PR review:
     PR number: {pr_number}
     
-    Diff hunk:
+    Diff hunk for `{file_path}`:
     ```
     {diff}
     ```
     
-    User Comment:
+    User comment on diff:
     ```
     {comment_text}
     ```
 
     Read the pull request and understand the user's comment in context. If the user asks for changes,
-    write those changes directly to the file system. Address your response directly to the user.
+    write those changes directly to the file on which they commented.
     """
         Task.schedule(title=command, user_request=user_request, comment_id=comment_id,
                       comment_url=comment_url, pr_number=pr_number, head=head, base=base,
