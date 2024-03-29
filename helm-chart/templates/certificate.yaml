@@ -1,0 +1,8 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: app-pr-pilot-certificate
+  namespace: default
+spec:
+  domains:
+    - app.pr-pilot.ai

@@ -1,0 +1,48 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ job_name }}
+  labels:
+    app: pr-pilot
+    task_id: "{{ task_id }}"
+    github_project_org: "{{ github_project_org }}"
+    github_project_name: "{{ github_project_name }}"
+    github_user: "{{ github_user }}"
+    branch: "{{ branch }}"
+spec:
+  ttlSecondsAfterFinished: 60  # 1 hour = 3600 seconds
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never  # Moved here
+      volumes:
+      - name: pem-volume
+        secret:
+          secretName: pr-pilot-private-key
+      containers:
+      - name: task
+        image: "{{ image }}"
+        volumeMounts:
+          - name: pem-volume
+            mountPath: /etc/ssl/certs/github_private_key.pem
+            subPath: github_app_private_key.pem
+        resources:
+          limits:
+            memory: "500Mi"
+            cpu: "1"
+          requests:
+            memory: "200Mi"
+            cpu: "0.2"
+        env:
+        - name: GITHUB_APP_PRIVATE_KEY_PATH
+          value: "/etc/ssl/certs/github_private_key.pem"
+        - name: TASK_ID
+          value: "{{ task_id }}"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: pr-pilot-db-postgresql
+              key: postgres-password
+        envFrom:
+        - secretRef:
+            name: pr-pilot-secret  # Make sure this is correctly indented

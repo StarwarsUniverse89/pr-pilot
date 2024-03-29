@@ -1,0 +1,10 @@
+<!-- repository_permissions.html -->
+{% for repo in repositories %}
+    <div>
+        <p>{{ repo.name }}</p>
+        <form method="post" action="{% url 'grant_permission' repo.id %}">
+            {% csrf_token %}
+            <button type="submit">Grant Permission</button>
+        </form>
+    </div>
+{% endfor %}

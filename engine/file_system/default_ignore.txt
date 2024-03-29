@@ -1,0 +1,17 @@
+.cache
+venv
+.idea
+.git
+*.iml
+**/*.pyc
+__pycache__
+.tox
+log
+.pytest_cache
+artifacts
+credentials.json
+env
+db.sqlite3
+*.png
+*.jpeg
+*.jpg

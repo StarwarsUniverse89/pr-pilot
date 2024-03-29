@@ -1,0 +1,12 @@
+.idea
+*.iml
+*.sqlite3
+__pycache__
+*.env
+venv
+*.pem
+repo_workspace
+*.tgz
+static
+volumes
+embedEtcd.yaml

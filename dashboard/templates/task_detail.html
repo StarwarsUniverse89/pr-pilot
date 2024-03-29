@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load render_table from django_tables2 %}
+{% block content %}
+    <h1>{{task.title }}</h1>
+    <p>
+        {% if task.status == 'failed' %}
+        <span class="badge bg-danger">{{ task.status }}</span>
+        {% elif task.status == 'completed' %}
+        <span class="badge bg-success">{{ task.status }}</span>
+        {% elif task.status == 'scheduled' %}
+        <span class="badge bg-info">{{ task.status }}</span>
+        {% else %}
+        <span class="badge bg-warning">{{ task.status }}</span>
+        {% endif %}
+        <span class="text-muted">{{ task.created }}</span>
+    </p>
+    <div class="">
+
+    </div>
+    <div class="lead p-3 mb-3">
+        {{ task_result }}
+        <a class="btn btn-primary" title="View original comment on Github" href="{{task.comment_url}}"><i class="fa-brands fa-github"></i> Show on Github</a>
+        <!-- Button with link to undo page -->
+        {% if can_undo %}
+        <a class="btn btn-danger" title="Undo marked events" href="{% url 'task_undo' task.id %}"><i class="fa-solid fa-rotate-left"></i> Undo</a>
+        {% else %}
+        <button class="btn btn-danger" title="None of the task events are reversible" disabled><i class="fa-solid fa-rotate-left"></i> No reversible events</button>
+        {% endif %}
+    </div>
+
+    {% render_table event_table %}
+
+    {% if bill %}
+        {% if bill.project_is_open_source and bill.user_is_owner %}
+        <h3 class="mt-5"><i class="fa-solid fa-coins"></i> This task was <span class="text-success">free</span> for you! Thank you for supporting the open source community.</h3>
+        {% elif bill.discount_percent > 0 %}
+        <h3 class="mt-5"><i class="fa-solid fa-coins"></i> {{ bill.total_credits_used|floatformat:1 }} <span class="text-success">- {{ discount_credits|floatformat:1 }}</span>  credits. You got a <span class="text-success">{{ bill.discount_percent|floatformat:0 }}% discount</span> for your open source contribution! </h3>
+        {% render_table cost_item_table %}
+        {% else %}
+        <h3 class="mt-5"><i class="fa-solid fa-coins"></i> {{ bill.total_credits_used|floatformat:1 }} credits</h3>
+        {% render_table cost_item_table %}
+        {% endif %}
+    {% else %}
+        <h3 class="mt-5"><i class="fa-solid fa-coins"></i> {{ total_cost|floatformat:1 }} credits</h3>
+        {% render_table cost_item_table %}
+    {% endif %}
+
+
+
+
+{% endblock %}
