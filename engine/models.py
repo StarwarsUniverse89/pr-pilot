@@ -188,7 +188,13 @@ class TaskEvent(models.Model):
             logger.info(f"Deleting comment {self.target}")
             if self.task.pr_number:
                 pr = self.task.github.get_repo(self.task.github_project).get_pull(self.task.pr_number)
-                pr.get_issue_comment(int(self.target)).delete()
+                try:
+                    pr.get_issue_comment(int(self.target)).delete()
+                except GithubException as e:
+                    if e.status == 404:
+                        pr.get_review_comment(int(self.target)).delete()
+                    else:
+                        raise
             else:
                 issue = self.task.github.get_repo(self.task.github_project).get_issue(self.task.issue_number)
                 issue.get_comment(int(self.target)).delete()
