@@ -71,4 +71,4 @@ We welcome contributions to PR Pilot! Please check out our [contributing guideli
 
 ## License 📄
 
-PR Pilot is open source and available under the MIT License. See the [LICENSE](LICENSE) file for more info.
+PR Pilot is open source and available under the GPL-3 License. See the [LICENSE](LICENSE) file for more info.
