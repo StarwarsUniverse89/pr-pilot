@@ -1,12 +1,18 @@
-# PR Pilot 🚀
+# PR Pilot
 
-PR Pilot is a GitHub bot designed to autonomously understand and execute tasks based on commands in GitHub comments. It leverages the power of Django, Python, Docker, and Kubernetes to provide a seamless experience for managing GitHub projects. For more information, visit our [documentation](https://docs.pr-pilot.ai) and the official website at [www.pr-pilot.ai](https://www.pr-pilot.ai).
+**[Documentation](https://docs.pr-pilot.ai)** | **[Website](https://www.pr-pilot.ai)** 
 
-## Architecture 🏗️
+PR Pilot is a GitHub bot designed to autonomously understand and execute tasks based on commands in GitHub comments.
+Use **`/pilot <prompt>`** in a comment and PR Pilot understands your prompt in the context of your issue/PR. 
+What's currently possible:
 
-The architecture of PR Pilot is designed for robustness and efficiency. At its core, it utilizes a GitHub app, registered according to GitHub's guidelines, to facilitate interactions with GitHub repositories. The backbone of PR Pilot is a Django application, which is deployed to handle GitHub webhooks. This application processes commands found in issue comments and pull requests, ensuring that tasks are executed as intended.
+* [**Request code changes**](https://docs.pr-pilot.ai/how_it_works.html#collaborate)
+* [**Monitor its activities in a dashboard**](https://docs.pr-pilot.ai/how_it_works.html#monitor)
+* [**Ask questions about your issue/PR**](https://docs.pr-pilot.ai/how_it_works.html#have-a-conversation)
+* [**Rollback changes easily**](https://docs.pr-pilot.ai/how_it_works.html#rollback)
+* [**Teach it about your project**](https://docs.pr-pilot.ai/how_it_works.html#teach)
 
-For serving static files, PR Pilot employs an nginx server, known for its high performance and stability. The system also includes jobs that are triggered by webhooks to carry out `/pilot` commands directly within the GitHub environment. To manage the deployment of the Django application, the nginx server, and the execution of jobs, PR Pilot relies on a Kubernetes cluster. This setup ensures that the application is scalable, resilient, and can efficiently manage the workload.
+See [how it works](https://docs.pr-pilot.ai/how_it_works.html) and check out the [usage examples](https://docs.pr-pilot.ai/how_it_works.html)!
 
 ## How to Run 🚀
 
@@ -19,7 +25,7 @@ pip install -r requirements.txt
 2. Spin up a Postgres database for data persistence.
 ```shell
 # Example using Docker
-docker run --name postgres-pr-pilot -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+docker run --name postgres-pr-pilot -e POSTGRES_PASSWORD=postgres -d postgres
 ```
 3. Start ngrok to expose your local server to the internet and set the GitHub app webhook endpoint and OAuth login callback accordingly.
 ```shell
@@ -43,6 +49,17 @@ ngrok http 8000
 ```shell
 python manage.py runserver
 ```
+
+
+## Architecture 🏗️
+
+At its core, it utilizes a **GitHub app** to facilitate interactions with GitHub repositories. 
+The backbone of PR Pilot is a **Django** application, which is deployed to handle **GitHub webhooks**. 
+This application processes the **`/pilot`** commands found in issue comments and pull requests and deploys Kubernetes jobs that 
+execute the commands in the context of the repository.
+For serving static files, PR Pilot employs an **nginx** server. To manage the deployment of the Django application, the 
+nginx server, and the execution of jobs, PR Pilot relies on a **Kubernetes cluster**.
+
 
 ## Contributing 🤝
 
