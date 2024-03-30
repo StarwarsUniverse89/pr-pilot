@@ -29,7 +29,7 @@ html_theme = 'sphinx_material'
 html_static_path = ['_static']
 html_theme_options = {
     'base_url': 'https://docs.pr-pilot.ai',
-    'repo_url': 'https://github.com/PR-Pilot-AI/pr-pilot-public',
+    'repo_url': 'https://github.com/PR-Pilot-AI/pr-pilot',
     'repo_name': 'PR Pilot',
     'html_minify': True,
     'css_minify': True,
