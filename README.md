@@ -14,9 +14,13 @@ What's currently possible:
 
 See [how it works](https://docs.pr-pilot.ai/how_it_works.html) and check out the [usage examples](https://docs.pr-pilot.ai/how_it_works.html)!
 
-## How to Run 🚀
+## Installation 🛠️
 
-To get PR Pilot up and running, follow these steps:
+You can install PR Pilot from the [GitHub Marketplace](https://github.com/marketplace/pr-pilot-ai).
+
+## Run Locally 🚀
+
+To get PR Pilot up and running on your own machine, follow these steps:
 
 1. Install pip dependencies from `requirements.txt`.
 ```shell
