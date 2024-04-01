@@ -1,18 +1,25 @@
 # PR Pilot
 
-**[Documentation](https://docs.pr-pilot.ai)** | **[Website](https://www.pr-pilot.ai)** 
+| **[Install Now](https://github.com/marketplace/pr-pilot-ai)** | **[Documentation](https://docs.pr-pilot.ai)** | **[Website](https://www.pr-pilot.ai)** | 
 
 PR Pilot is a GitHub bot designed to autonomously understand and execute tasks based on commands in GitHub comments.
 Use **`/pilot <prompt>`** in a comment and PR Pilot understands your prompt in the context of your issue/PR. 
-What's currently possible:
 
-* [**Request code changes**](https://docs.pr-pilot.ai/how_it_works.html#collaborate)
+## A bot that helps write its own code
+PR Pilot is actively involved in [writing its own code](https://github.com/PR-Pilot-AI/pr-pilot/issues?q=label:demo+is:closed+):
+
+* [Setting up Unit Testing](https://github.com/PR-Pilot-AI/pr-pilot/issues/39)
+* [Creating a README file](https://github.com/PR-Pilot-AI/pr-pilot/issues/35)
+
+This repository serves as a living example for its **usefulness to Github users**:
+
+* [**Use PR Pilot to work on PRs**](https://docs.pr-pilot.ai/how_it_works.html#collaborate)
 * [**Monitor its activities in a dashboard**](https://docs.pr-pilot.ai/how_it_works.html#monitor)
 * [**Ask questions about your issue/PR**](https://docs.pr-pilot.ai/how_it_works.html#have-a-conversation)
 * [**Rollback changes easily**](https://docs.pr-pilot.ai/how_it_works.html#rollback)
 * [**Teach it about your project**](https://docs.pr-pilot.ai/how_it_works.html#teach)
 
-See [how it works](https://docs.pr-pilot.ai/how_it_works.html) and check out the [usage examples](https://docs.pr-pilot.ai/how_it_works.html)!
+See [how it works in detail](https://docs.pr-pilot.ai/how_it_works.html) and check out more [usage examples](https://docs.pr-pilot.ai/how_it_works.html)!
 
 ## Installation 🛠️
 
