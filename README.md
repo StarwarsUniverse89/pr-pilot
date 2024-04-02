@@ -5,6 +5,7 @@
 <p align="center">
   <a href="https://github.com/marketplace/pr-pilot-a">Install</a> |
   <a href="https://docs.pr-pilot.ai">Documentation</a> | 
+  <a href="https://www.pr-pilot.ai/blog">Blog</a> | 
   <a href="https://www.pr-pilot.ai">Website</a>
 </p>
 
@@ -16,6 +17,7 @@ An open source Github bot that allows developers to generate code, issues and pu
 ### 📝 PR Pilot is actively involved in [writing its own code](https://github.com/PR-Pilot-AI/pr-pilot/issues?q=label:demo+is:closed+)
 * 🛠️ [Setting up Unit Testing](https://github.com/PR-Pilot-AI/pr-pilot/issues/39)
 * 📄 [Creating a README file](https://github.com/PR-Pilot-AI/pr-pilot/issues/35)
+* 📝 [Adding Emojis and correcting grammar](https://github.com/PR-Pilot-AI/pr-pilot/issues/47)
 
 ### 🌟 Features
 
