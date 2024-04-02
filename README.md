@@ -37,18 +37,18 @@ You can install PR Pilot from the [GitHub Marketplace](https://github.com/market
 
 Set the following environment variables:
 
-| Variable                | Description                                   |
-|-------------------------|-----------------------------------------------|
-| `GITHUB_APP_CLIENT_ID`  | GitHub App Client ID                          |
-| `GITHUB_APP_SECRET`     | GitHub App Secret                             |
-| `GITHUB_WEBHOOK_SECRET` | Secret for securing webhooks                  |
-| `GITHUB_APP_ID`         | GitHub App ID                                 |
-| `OPENAI_API_KEY`        | API key for OpenAI services                   |
-| `REPO_DIR`              | Directory for storing repository data         |
-| `TAVILY_API_KEY`        | API key for Tavily search engine              |
-| `STRIPE_API_KEY`        | Stripe API key for handling payments          |
-| `STRIPE_WEBHOOK_SECRET` | Secret for securing Stripe webhook endpoints  |
-
+| Variable                | Description                                  |
+|-------------------------|----------------------------------------------|
+| `GITHUB_APP_CLIENT_ID`  | GitHub App Client ID                         |
+| `GITHUB_APP_SECRET`     | GitHub App Secret                            |
+| `GITHUB_WEBHOOK_SECRET` | Secret for securing webhooks                 |
+| `GITHUB_APP_ID`         | GitHub App ID                                |
+| `OPENAI_API_KEY`        | API key for OpenAI services                  |
+| `REPO_DIR`              | Directory for storing repository data        |
+| `TAVILY_API_KEY`        | API key for Tavily search engine             |
+| `STRIPE_API_KEY`        | Stripe API key for handling payments         |
+| `STRIPE_WEBHOOK_SECRET` | Secret for securing Stripe webhook endpoints |
+| `DJANGO_SECRET_KEY`     | Secret key for Django                        |
 To get PR Pilot up and running on your own machine, follow these steps:
 
 
