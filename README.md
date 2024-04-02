@@ -23,11 +23,11 @@ An open source Github bot that allows developers to generate code, issues and pu
 
 * 🌐 [**Use PR Pilot to work on PRs**](https://docs.pr-pilot.ai/how_it_works.html#collaborate)
 * 📊 [**Monitor its activities in a dashboard**](https://docs.pr-pilot.ai/how_it_works.html#monitor)
-* [**Ask questions about your issue/PR**](https://docs.pr-pilot.ai/how_it_works.html#have-a-conversation)
-* [**Rollback changes easily**](https://docs.pr-pilot.ai/how_it_works.html#rollback)
-* [**Teach it about your project**](https://docs.pr-pilot.ai/how_it_works.html#teach)
+* 🤔 [**Ask questions about your issue/PR**](https://docs.pr-pilot.ai/how_it_works.html#have-a-conversation)
+* ⏪ [**Rollback changes easily**](https://docs.pr-pilot.ai/how_it_works.html#rollback)
+* 🎓 [**Teach it about your project**](https://docs.pr-pilot.ai/how_it_works.html#teach)
 
-See [how it works in detail](https://docs.pr-pilot.ai/how_it_works.html) and check out more [usage examples](https://docs.pr-pilot.ai/how_it_works.html)!
+See [how it works in detail](https://docs.pr-pilot.ai/how_it_works.html) and check out more [usage examples](https://docs.pr-pilot.ai/examples.html)!
 
 ## 🛠️ Installation
 
@@ -49,6 +49,7 @@ Set the following environment variables:
 | `STRIPE_API_KEY`        | Stripe API key for handling payments         |
 | `STRIPE_WEBHOOK_SECRET` | Secret for securing Stripe webhook endpoints |
 | `DJANGO_SECRET_KEY`     | Secret key for Django                        |
+
 To get PR Pilot up and running on your own machine, follow these steps:
 
 
