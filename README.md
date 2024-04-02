@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://avatars.githubusercontent.com/ml/17635?s=140&v=" width="100" alt="ragflow logo">
+<img src="https://avatars.githubusercontent.com/ml/17635?s=140&v=" width="100" alt="PR Pilot Logo">
 </div>
 
 <p align="center">
@@ -8,47 +8,32 @@
   <a href="https://www.pr-pilot.ai">Website</a>
 </p>
 
-# PR Pilot
+
+# 🤖 PR Pilot
 
 An open source Github bot that allows developers to generate code, issues and pull requests directly from comments.
 
+### 📝 PR Pilot is actively involved in [writing its own code](https://github.com/PR-Pilot-AI/pr-pilot/issues?q=label:demo+is:closed+)
+* 🛠️ [Setting up Unit Testing](https://github.com/PR-Pilot-AI/pr-pilot/issues/39)
+* 📄 [Creating a README file](https://github.com/PR-Pilot-AI/pr-pilot/issues/35)
 
-### PR Pilot is actively involved in [writing its own code](https://github.com/PR-Pilot-AI/pr-pilot/issues?q=label:demo+is:closed+)
-* [Setting up Unit Testing](https://github.com/PR-Pilot-AI/pr-pilot/issues/39)
-* [Creating a README file](https://github.com/PR-Pilot-AI/pr-pilot/issues/35)
+### 🌟 Features
 
-### Features
-
-* [**Use PR Pilot to work on PRs**](https://docs.pr-pilot.ai/how_it_works.html#collaborate)
-* [**Monitor its activities in a dashboard**](https://docs.pr-pilot.ai/how_it_works.html#monitor)
+* 🌐 [**Use PR Pilot to work on PRs**](https://docs.pr-pilot.ai/how_it_works.html#collaborate)
+* 📊 [**Monitor its activities in a dashboard**](https://docs.pr-pilot.ai/how_it_works.html#monitor)
 * [**Ask questions about your issue/PR**](https://docs.pr-pilot.ai/how_it_works.html#have-a-conversation)
 * [**Rollback changes easily**](https://docs.pr-pilot.ai/how_it_works.html#rollback)
 * [**Teach it about your project**](https://docs.pr-pilot.ai/how_it_works.html#teach)
 
 See [how it works in detail](https://docs.pr-pilot.ai/how_it_works.html) and check out more [usage examples](https://docs.pr-pilot.ai/how_it_works.html)!
 
-## Installation 🛠️
+## 🛠️ Installation
 
 You can install PR Pilot from the [GitHub Marketplace](https://github.com/marketplace/pr-pilot-ai).
 
-## Run Locally 🚀
+## 🚀 Run Locally
 
-To get PR Pilot up and running on your own machine, follow these steps:
-
-1. Install pip dependencies from `requirements.txt`.
-```shell
-pip install -r requirements.txt
-```
-2. Spin up a Postgres database for data persistence.
-```shell
-# Example using Docker
-docker run --name postgres-pr-pilot -e POSTGRES_PASSWORD=postgres -d postgres
-```
-3. Start ngrok to expose your local server to the internet and set the GitHub app webhook endpoint and OAuth login callback accordingly.
-```shell
-ngrok http 8000
-```
-4. Set the following environment variables:
+Set the following environment variables:
 
 | Variable                | Description                                   |
 |-------------------------|-----------------------------------------------|
@@ -62,36 +47,59 @@ ngrok http 8000
 | `STRIPE_API_KEY`        | Stripe API key for handling payments          |
 | `STRIPE_WEBHOOK_SECRET` | Secret for securing Stripe webhook endpoints  |
 
-5. Run the Django application using the command `python manage.py runserver`.
-```shell
+To get PR Pilot up and running on your own machine, follow these steps:
+
+
+```bash
+# Clone the repository
+git clone https://github.com/PR-Pilot-AI/pr-pilot.git
+
+# Change directory
+ cd pr-pilot
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Apply migrations
+python manage.py migrate
+
+# Create a superuser
+python manage.py createsuperuser
+
+# Start the development server
 python manage.py runserver
 ```
 
-## Unit Tests 🧪
+To expose your local server to the internet, you can use `ngrok`:
+
+```bash
+ngrok http 8000
+```
+
+## 🧪 Unit Tests
 
 PR Pilot uses `tox` for managing unit tests. The test setup is configured in the `tox.ini` file, and tests are written using `pytest`.
 
-To run the tests, execute the following command in your shell:
-```shell
+To run the tests, execute:
+
+```bash
 tox
 ```
 
 This will run all the tests defined in the project, ensuring that your changes do not break existing functionality.
 
-## Architecture 🏗️
+## 🏗️ Architecture
 
 At its core, it utilizes a **GitHub app** to facilitate interactions with GitHub repositories. 
 The backbone of PR Pilot is a **Django** application, which is deployed to handle **GitHub webhooks**. 
-This application processes the **`/pilot`** commands found in issue comments and pull requests and deploys Kubernetes jobs that 
-execute the commands in the context of the repository.
-For serving static files, PR Pilot employs an **nginx** server. To manage the deployment of the Django application, the 
+For serving static files, PR Pilot employs an **nginx** server. To manage the deployment of the Django application, 
 nginx server, and the execution of jobs, PR Pilot relies on a **Kubernetes cluster**.
 
 
-## Contributing 🤝
+## 🤝 Contributing
 
 We welcome contributions to PR Pilot! Please check out our [contributing guidelines](CONTRIBUTING.md) for more information on how to get involved.
 
-## License 📄
+## 📄 License
 
 PR Pilot is open source and available under the GPL-3 License. See the [LICENSE](LICENSE) file for more info.
