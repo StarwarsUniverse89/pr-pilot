@@ -1,17 +1,23 @@
+<div align="center">
+<img src="https://avatars.githubusercontent.com/ml/17635?s=140&v=" width="100" alt="ragflow logo">
+</div>
+
+<p align="center">
+  <a href="https://github.com/marketplace/pr-pilot-a">Install</a> |
+  <a href="https://docs.pr-pilot.ai">Documentation</a> | 
+  <a href="https://www.pr-pilot.ai">Website</a>
+</p>
+
 # PR Pilot
 
-| **[Install Now](https://github.com/marketplace/pr-pilot-ai)** | **[Documentation](https://docs.pr-pilot.ai)** | **[Website](https://www.pr-pilot.ai)** | 
+An open source Github bot that allows developers to generate code, issues and pull requests directly from comments.
 
-PR Pilot is a GitHub bot designed to autonomously understand and execute tasks based on commands in GitHub comments.
-Use **`/pilot <prompt>`** in a comment and PR Pilot understands your prompt in the context of your issue/PR. 
 
-## A bot that helps write its own code
-PR Pilot is actively involved in [writing its own code](https://github.com/PR-Pilot-AI/pr-pilot/issues?q=label:demo+is:closed+):
-
+### PR Pilot is actively involved in [writing its own code](https://github.com/PR-Pilot-AI/pr-pilot/issues?q=label:demo+is:closed+)
 * [Setting up Unit Testing](https://github.com/PR-Pilot-AI/pr-pilot/issues/39)
 * [Creating a README file](https://github.com/PR-Pilot-AI/pr-pilot/issues/35)
 
-This repository serves as a living example for its **usefulness to Github users**:
+### Features
 
 * [**Use PR Pilot to work on PRs**](https://docs.pr-pilot.ai/how_it_works.html#collaborate)
 * [**Monitor its activities in a dashboard**](https://docs.pr-pilot.ai/how_it_works.html#monitor)
