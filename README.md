@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-  <a href="https://github.com/marketplace/pr-pilot-a">Install</a> |
+  <a href="https://github.com/marketplace/pr-pilot-ai"><b>Install</b></a> |
   <a href="https://docs.pr-pilot.ai">Documentation</a> | 
   <a href="https://www.pr-pilot.ai/blog">Blog</a> | 
   <a href="https://www.pr-pilot.ai">Website</a>
