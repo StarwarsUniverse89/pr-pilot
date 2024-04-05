@@ -5,9 +5,8 @@ from decimal import Decimal
 
 import git
 from django.conf import settings
-from django.db.models import Sum
 from git import Repo
-from github import Github, GithubException
+from github import Github
 from github.PullRequest import PullRequest
 
 from accounts.models import UserBudget
@@ -70,7 +69,7 @@ class TaskEngine:
         :return: True if changes were pushed, False if no changes were made
         """
         if self.project.has_uncommitted_changes():
-            logger.warn(f"Found uncommitted changes on {branch_name!r} branch! Committing...")
+            logger.warning(f"Found uncommitted changes on {branch_name!r} branch! Committing...")
             self.project.commit_all_changes(message=f"Uncommitted changes")
         if self.project.get_diff_to_main():
             logger.info(f"Found changes on {branch_name!r} branch. Pushing and creating PR...")
