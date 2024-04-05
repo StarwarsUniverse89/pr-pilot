@@ -12,7 +12,7 @@
 
 # 🤖 PR Pilot
 
-An open source Github bot that allows developers to generate code, issues and pull requests directly from comments.
+An open source platform that enables GitHub developers to trigger small, AI-driven development tasks in their repositories from anywhere.
 
 ### 📝 PR Pilot is actively involved in [writing its own code](https://github.com/PR-Pilot-AI/pr-pilot/issues?q=label:demo+is:closed+)
 * 🛠️ [Setting up Unit Testing](https://github.com/PR-Pilot-AI/pr-pilot/issues/39)
