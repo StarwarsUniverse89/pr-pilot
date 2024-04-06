@@ -5,12 +5,13 @@ from pathlib import Path
 from typing import Optional, Union, List, Dict
 
 from django.conf import settings
+from github import Github
+from github.Issue import Issue
 from langchain.agents import create_openai_functions_agent, AgentExecutor
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_core.callbacks import CallbackManagerForToolRun
 from langchain_core.messages import SystemMessage
-from langchain_core.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, MessagesPlaceholder, \
-    HumanMessagePromptTemplate, PromptTemplate
+from langchain_core.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, MessagesPlaceholder,     HumanMessagePromptTemplate, PromptTemplate
 from langchain_core.tools import tool
 from langchain_openai import ChatOpenAI
 
@@ -25,9 +26,13 @@ logger = logging.getLogger(__name__)
 
 
 
-
 system_message = """
 You are PR Pilot, an AI collaborator on the `{github_project}` Github Project.
+
+# Project Description
+{project_info}
+
+# Your Purpose
 You will receive a user request related to an issue or PR on the project.
 Your job is to fulfill the user request autonomously and provide the response.
 All issues, PR, files and code you have access to are in the context of the `{github_project}` repository.
@@ -221,9 +226,30 @@ class PRPilotSearch(TavilySearchResults):
         return super()._run(query, run_manager)
 
 
+@tool
+def fork_issue(github_project: str, issue_number: int):
+    """'Forks' a Github issue from an upstream project into our current project.
+
+    Parameters:
+    - github_project: The Github project that contains the original issue.
+    - issue_number: The number of the issue to be forked.
+    """
+    task = Task.current()
+    original_repo = Github().get_repo(github_project)
+    original_issue: Issue = original_repo.get_issue(issue_number)
+    title = original_issue.title
+    body = original_issue.body
+    comments = [f"**User {comment.user.id}**:\n{comment.body}\n" for comment in original_issue.get_comments()]
+    distilled_comments = '\n'.join(comments)
+    body = f"**This is a copy of {original_issue.html_url}**\n\n---\n\n" + body + '\n\n---\n# Original Comments\n\n' + distilled_comments
+    # Create a new issue in the forked repository
+    forked_issue = task.github.get_repo(task.github_project).create_issue(title=f"Forked: {title}", body=body)
+    return f"Issue #{issue_number} has been successfully forked to {github_project} as Issue #{forked_issue.number}."
+
+
 def create_pr_pilot_agent():
     llm = ChatOpenAI(model="gpt-4-turbo-preview", temperature=0, callbacks=[CostTrackerCallback("gpt-4-turbo-preview", "conversation")])
-    tools = [read_github_issue, read_pull_request, create_github_issue, write_file, read_files, search_with_ripgrep, search_github_issues, edit_github_issue, copy_file, move_file, delete_file, PRPilotSearch(), scrape_website]
+    tools = [read_github_issue, read_pull_request, create_github_issue, write_file, read_files, search_with_ripgrep, search_github_issues, edit_github_issue, copy_file, move_file, delete_file, PRPilotSearch(), scrape_website, fork_issue]
     prompt = ChatPromptTemplate.from_messages(
         [SystemMessagePromptTemplate(prompt=PromptTemplate(input_variables=['github_project', 'project_info'], template=system_message)),
          HumanMessagePromptTemplate(prompt=PromptTemplate(input_variables=['user_request'], template=template)),
@@ -232,4 +258,6 @@ def create_pr_pilot_agent():
     )
     agent = create_openai_functions_agent(llm, tools, prompt)
     return AgentExecutor(agent=agent, tools=tools, verbose=settings.DEBUG)
+
+
 
