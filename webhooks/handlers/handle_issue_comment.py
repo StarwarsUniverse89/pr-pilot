@@ -4,7 +4,7 @@ import re
 from django.http import JsonResponse
 from github import Github
 
-from engine.models import Task
+from engine.models.task import Task, TaskType
 from webhooks.jwt_tools import get_installation_access_token
 
 logger = logging.getLogger(__name__)
@@ -49,6 +49,7 @@ Read the {issue_or_pr}, fulfill the user's request and return your response to t
         task_args = dict(title=f"Respond to {issue_or_pr} #{issue_number} in {repository}", user_request=user_request,
                          issue_number=issue_number, comment_id=comment_id, comment_url=comment_url,
                          installation_id=installation_id, github_project=repository,
+                         task_type=TaskType.GITHUB_ISSUE.value,
                          github_user=commenter_username, branch="main", pilot_command=command)
         if issue.pull_request:
             pr = repo.get_pull(issue_number)
@@ -57,7 +58,8 @@ Read the {issue_or_pr}, fulfill the user's request and return your response to t
             task_args['base'] = pr.base.ref
         else:
             task_args['issue_number'] = issue_number
-        Task.schedule(**task_args)
+        task = Task.objects.create(**task_args)
+        task.schedule()
 
     else:
         command = None
