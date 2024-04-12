@@ -289,7 +289,7 @@ SPECTACULAR_SETTINGS = {
         'url': 'http://localhost:8000/',
         'description': 'Local development server',
     },{
-        'url': 'https://app.pr-pilot.ai/api/',
+        'url': 'https://app.pr-pilot.ai/',
         'description': 'Production API',
     }],
 }
