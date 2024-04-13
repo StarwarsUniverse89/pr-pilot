@@ -16,7 +16,7 @@ jobs:
         with:
           python-version: '3.8'
       - name: Install PR Pilot SDK
-        run: pip install pr-pilot
+        run: pip install pr-pilot==1.0.3
       - name: Execute AI Task
         env:
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
