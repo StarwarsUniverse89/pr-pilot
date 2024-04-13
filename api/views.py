@@ -20,7 +20,7 @@ class HasUserAPIKey(BaseHasAPIKey):
         status.HTTP_201_CREATED: TaskSerializer,
         status.HTTP_404_NOT_FOUND: OpenApiResponse(
             response=inline_serializer(
-                name="Not Found",
+                name="NotFound",
                 fields={"error": serializers.CharField()},
             ),
             examples=[OpenApiExample(
@@ -33,12 +33,12 @@ class HasUserAPIKey(BaseHasAPIKey):
         ),
         status.HTTP_400_BAD_REQUEST: OpenApiResponse(
             response=inline_serializer(
-                name="Bad Request",
+                name="BadRequest",
                 fields={"error": serializers.CharField(),
                         "details": serializers.CharField()},
             ),
             examples=[OpenApiExample(
-                "Validation Error",
+                "ValidationError",
                 summary="Validation Error",
                 description="Input validation failed",
                 value={"error": "Input validation failed", "details": "<validation_errors>"},
@@ -76,11 +76,11 @@ def create_task(request):
         status.HTTP_200_OK: TaskSerializer,
         status.HTTP_404_NOT_FOUND: OpenApiResponse(
             response=inline_serializer(
-                name="Not Found",
+                name="NotFound",
                 fields={"error": serializers.CharField()},
             ),
             examples=[OpenApiExample(
-                "Task Not Found",
+                "TaskNotFound",
                 summary="Task Not Found",
                 description="The specified task does not exist",
                 value={"error": "Task not found"},
