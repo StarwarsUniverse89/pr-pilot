@@ -15,8 +15,9 @@ There was a new commit by `{author}` on the main branch. Commit message:
 ---
 
 If they explicitly mention you and ask you to do something, do it.
-Otherwise, comment on the message.
+Otherwise, just say 'Ignored'.
 """
+print(prompt)
 
 task = create_task("PR-Pilot-AI/pr-pilot", prompt)
 while task.status != "completed":
