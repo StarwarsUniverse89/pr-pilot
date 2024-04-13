@@ -14,8 +14,8 @@ There was a new commit by `{author}` on the main branch. Commit message:
 
 ---
 
-If they explicitly mention you and ask you to do something, do it.
-Otherwise, just say 'Ignored'.
+If they explicitly mention you with a `/pilot` command and ask you to do something, do it.
+Otherwise, just say 'Ignored, because <few words>.'.
 """
 print(prompt)
 
