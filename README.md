@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-  <a href="https://github.com/marketplace/pr-pilot-ai"><b>Install</b></a> |
+  <a href="https://github.com/apps/pr-pilot-ai/installations/new"><b>Install</b></a> |
   <a href="https://docs.pr-pilot.ai">Documentation</a> | 
   <a href="https://www.pr-pilot.ai/blog">Blog</a> | 
   <a href="https://www.pr-pilot.ai">Website</a>
@@ -14,29 +14,56 @@
 
 A **text-to-task platform** that enables GitHub developers to trigger AI-driven development tasks in their repositories from anywhere.
 
-![PR Pilot](docs/source/img/overview.png)
-
 
 Get started now with our [User Guide](https://docs.pr-pilot.ai/user_guide.html).
 
-
-### 🌟 Use Natural Language Prompts to Automate Your GitHub Workflow
-
-* [x] 🪄 [Quickly Generate Intial Implemenation / Fixes for Issues](https://github.com/PR-Pilot-AI/pr-pilot/issues/39#issuecomment-2028989177)
-* [x] 🌐 [Automate Code Changes in PRs](https://docs.pr-pilot.ai/how_it_works.html#collaborate)
-* [x] 🤔 [Ask questions about your issue/PR](https://docs.pr-pilot.ai/how_it_works.html#have-a-conversation)
-* [x] 📝 [Generate Code Documentation](https://github.com/PR-Pilot-AI/pr-pilot/issues/51)
-* [ ] Create PRs based on ChatGPT Conversations
-* [ ] Create a Slack Bot for your Github Repo
-* [ ] Trigger Code Changes from Zapier Workflows
-* [ ] Create a New Task from a Python Script
+![PR Pilot](docs/source/img/overview.png)
 
 
-Check out the [Demo Issues & PRs](https://github.com/PR-Pilot-AI/pr-pilot/issues?q=label:demo+is:closed+) to see how you can create tasks directly in Github. PR Pilot is actively involved in writing its own code! 
+
+
+### 🌟 Automate your Github Project with Natural Language Prompts
+
+
+Using the **[Python SDK](https://github.com/PR-Pilot-AI/pr-pilot-python)**:
+
+```python
+import time
+
+from pr_pilot.util import create_task, get_task
+
+github_repo = "PR-Pilot-AI/pr-pilot"
+task = create_task(github_repo, "Summarize the README file and create a Github issue with the result.")
+
+while task.status != "completed":
+    print(f"Waiting for task to complete. Status: {task.status}")
+    task = get_task(task.id)
+    time.sleep(5)
+    
+print(f"Task completed. Result:\n\n{task.result}")
+```
+
+Using the [API](https://app.pr-pilot.ai/api/redoc/) directly:
+
+```bash 
+curl -X POST 'https://app.pr-pilot.ai/api/tasks/' \
+-H 'Content-Type: application/json' \
+-H 'X-Api-Key: YOUR_API_KEY_HERE' \
+-d '{
+    "prompt": "Properly format the README.md and add emojis",
+    "github_repo": "owner/repo"
+}'
+```
+
+Via comments on Github issues and PRs:
+
+![First pilot command](docs/source/img/first_command.png)
+
+... and more ways to come!
 
 ## 🛠️ Installation
 
-You can install PR Pilot from the [GitHub Marketplace](https://github.com/marketplace/pr-pilot-ai).
+You can install PR Pilot from the [GitHub Marketplace](https://github.com/apps/pr-pilot-ai).
 
 ## 🚀 Run Locally
 

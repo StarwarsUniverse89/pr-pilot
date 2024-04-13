@@ -7,7 +7,7 @@ This guide will help you get started with PR Pilot and show you how to use it to
 
 ## Installation
 
-First, install PR Pilot into your repository from the [Github marketplace](https://github.com/apps/pr-pilot-ai)
+First, [install PR Pilot](https://github.com/apps/pr-pilot-ai) into your repository, then follow the instructions below to create and monitor tasks.
 
 ## Creating Tasks
 

@@ -20,7 +20,6 @@ PR Pilot is a **text-to-task platform** that enables GitHub developers to trigge
    :hidden:
 
    user_guide
-   how_it_works
    capabilities
    examples
    vision
