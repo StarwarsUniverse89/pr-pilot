@@ -12,7 +12,7 @@
 
 # 🤖 PR Pilot
 
-A **text-to-task platform** that enables GitHub developers to trigger AI-driven development tasks in their repositories from anywhere.
+A **text-to-task** automation platform that enables GitHub developers to trigger AI-driven development tasks in their repositories from anywhere.
 
 
 Get started now with our [User Guide](https://docs.pr-pilot.ai/user_guide.html).
@@ -22,7 +22,7 @@ Get started now with our [User Guide](https://docs.pr-pilot.ai/user_guide.html).
 
 
 
-### 🌟 Automate your Github Project with Natural Language Prompts
+### Automate your Github project in new and powerful ways
 
 
 Using the **[Python SDK](https://github.com/PR-Pilot-AI/pr-pilot-python)**:
@@ -43,7 +43,9 @@ while task.status != "completed":
 print(f"Task completed. Result:\n\n{task.result}")
 ```
 
-Using the [API](https://app.pr-pilot.ai/api/redoc/) directly:
+See how we [combine PR Pilot with Github Actions](.github/workflows/ai_task_trigger.yml) to automate this project.
+
+You can also use the **[REST API](https://app.pr-pilot.ai/api/redoc/)** directly:
 
 ```bash 
 curl -X POST 'https://app.pr-pilot.ai/api/tasks/' \
@@ -55,11 +57,11 @@ curl -X POST 'https://app.pr-pilot.ai/api/tasks/' \
 }'
 ```
 
-Via comments on Github issues and PRs:
+or talk to PR Pilot directly on [Github issues and PRs](https://github.com/PR-Pilot-AI/pr-pilot/issues?q=label:demo+):
 
 ![First pilot command](docs/source/img/first_command.png)
 
-... and more ways to come!
+Check our **[roadmap](https://docs.pr-pilot.ai/roadmap.html)** for what's to come!
 
 ## 🛠️ Installation
 
