@@ -151,7 +151,7 @@ def read_files(file_paths: list[str]):
         else:
             output += f"File not found: `{file_path}`\n"
     non_empty_line_count = len([line for line in output.split("\n") if line.strip()])
-    if non_empty_line_count > settings.MAX_FIL_LINES:
+    if non_empty_line_count > settings.MAX_FILE_LINES:
         return f"The content of {file_paths} is longer than {settings.MAX_FILE_LINES} lines and too expensive to analyze. Abort!"
     return output
 
