@@ -45,6 +45,7 @@ User comment:
 ```
 
 Read the {issue_or_pr}, fulfill the user's request and return your response to the user's comment.
+Do NOT use your `comment_on_github_issue` function to respond to the user's comment, that will be done for you later.
 """
         task_args = dict(title=f"Respond to {issue_or_pr} #{issue_number} in {repository}", user_request=user_request,
                          issue_number=issue_number, comment_id=comment_id, comment_url=comment_url,
