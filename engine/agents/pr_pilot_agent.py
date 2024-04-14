@@ -15,7 +15,8 @@ from langchain_core.prompts import ChatPromptTemplate, SystemMessagePromptTempla
 from langchain_core.tools import tool
 from langchain_openai import ChatOpenAI
 
-from engine.agents.github_agent import read_github_issue, read_pull_request, create_github_issue, edit_github_issue
+from engine.agents.github_agent import read_github_issue, read_pull_request, create_github_issue, edit_github_issue, \
+    comment_on_github_issue
 from engine.agents.web_search_agent import scrape_website
 from engine.file_system import FileSystem
 from engine.langchain.cost_tracking import CostTrackerCallback
@@ -250,7 +251,7 @@ def fork_issue(github_project: str, issue_number: int):
 
 def create_pr_pilot_agent():
     llm = ChatOpenAI(model="gpt-4-turbo-preview", temperature=0, callbacks=[CostTrackerCallback("gpt-4-turbo-preview", "conversation")])
-    tools = [read_github_issue, read_pull_request, create_github_issue, write_file, read_files, search_with_ripgrep, search_github_issues, edit_github_issue, copy_file, move_file, delete_file, PRPilotSearch(), scrape_website, fork_issue]
+    tools = [comment_on_github_issue, read_github_issue, read_pull_request, create_github_issue, write_file, read_files, search_with_ripgrep, search_github_issues, edit_github_issue, copy_file, move_file, delete_file, PRPilotSearch(), scrape_website, fork_issue]
     prompt = ChatPromptTemplate.from_messages(
         [SystemMessagePromptTemplate(prompt=PromptTemplate(input_variables=['github_project', 'project_info'], template=system_message)),
          HumanMessagePromptTemplate(prompt=PromptTemplate(input_variables=['user_request'], template=template)),
