@@ -83,6 +83,7 @@ Set the following environment variables:
 | `STRIPE_API_KEY`        | Stripe API key for handling payments         |
 | `STRIPE_WEBHOOK_SECRET` | Secret for securing Stripe webhook endpoints |
 | `DJANGO_SECRET_KEY`     | Secret key for Django                        |
+| `SENTRY_DSN`            | (Optional) Sentry DSN for error monitoring   |
 
 To get PR Pilot up and running on your own machine, follow these steps:
 

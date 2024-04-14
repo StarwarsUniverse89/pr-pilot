@@ -235,10 +235,11 @@ JOB_STRATEGY = os.getenv('JOB_STRATEGY', 'kubernetes')
 license_json = json.loads(Path(BASE_DIR / 'licenses.json').read_text())
 OSI_APPROVED_LICENSES = [l['licenseId'] for l in license_json['licenses'] if l['isOsiApproved']]
 
+SENTRY_DSN = os.getenv('SENTRY_DSN', None)
 
-if not DEBUG:
+if SENTRY_DSN:
     sentry_sdk.init(
-        dsn="https://ada4f090ac744c5c947d9d9363d75a29@o4506900506279936.ingest.us.sentry.io/4506900507262976",
+        dsn=SENTRY_DSN,
         # Set traces_sample_rate to 1.0 to capture 100%
         # of transactions for performance monitoring.
         traces_sample_rate=1.0,
