@@ -117,6 +117,22 @@ def write_file(path: str, complete_entire_file_content: str, commit_message: str
 
 
 @tool
+def list_directory(path: str):
+    """List the contents of a directory."""
+    path = path.lstrip("/")
+    file_system = FileSystem()
+    node = file_system.get_node(Path(path))
+    if not node:
+        TaskEvent.add(actor="assistant", action="list_directory", target=path, message=f"Directory not found `{path}`")
+        return f"Directory not found: `{path}`"
+    TaskEvent.add(actor="assistant", action="list_directory", target=path, message=f"Listing directory `{path}`")
+    directory_content = ""
+    for child in node.nodes:
+        directory_content += f"- {child.path}\n"
+    return directory_content
+
+
+@tool
 def read_files(file_paths: list[str]):
     """Read the content of the given files."""
     if len(file_paths) > settings.MAX_READ_FILES:
@@ -135,7 +151,7 @@ def read_files(file_paths: list[str]):
         else:
             output += f"File not found: `{file_path}`\n"
     non_empty_line_count = len([line for line in output.split("\n") if line.strip()])
-    if non_empty_line_count > settings.MAX_FILE_LINES:
+    if non_empty_line_count > settings.MAX_FIL_LINES:
         return f"The content of {file_paths} is longer than {settings.MAX_FILE_LINES} lines and too expensive to analyze. Abort!"
     return output
 
@@ -251,7 +267,7 @@ def fork_issue(github_project: str, issue_number: int):
 
 def create_pr_pilot_agent():
     llm = ChatOpenAI(model="gpt-4-turbo-preview", temperature=0, callbacks=[CostTrackerCallback("gpt-4-turbo-preview", "conversation")])
-    tools = [comment_on_github_issue, read_github_issue, read_pull_request, create_github_issue, write_file, read_files, search_with_ripgrep, search_github_issues, edit_github_issue, copy_file, move_file, delete_file, PRPilotSearch(), scrape_website, fork_issue]
+    tools = [comment_on_github_issue, read_github_issue, read_pull_request, create_github_issue, write_file, read_files, list_directory, search_with_ripgrep, search_github_issues, edit_github_issue, copy_file, move_file, delete_file, PRPilotSearch(), scrape_website, fork_issue]
     prompt = ChatPromptTemplate.from_messages(
         [SystemMessagePromptTemplate(prompt=PromptTemplate(input_variables=['github_project', 'project_info'], template=system_message)),
          HumanMessagePromptTemplate(prompt=PromptTemplate(input_variables=['user_request'], template=template)),
