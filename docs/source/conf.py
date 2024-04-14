@@ -40,7 +40,7 @@ html_theme_options = {
     "master_doc": False,
     "nav_links": [
         {
-            "href": "https://github.com/marketplace/pr-pilot-ai",
+            "href": "https://github.com/apps/pr-pilot-ai",
             "internal": False,
             "title": "Install",
         },
