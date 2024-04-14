@@ -12,20 +12,50 @@
 
 # 🤖 PR Pilot
 
-A **text-to-task** automation platform that enables GitHub developers to trigger AI-driven development tasks in their repositories from anywhere.
+A platform that enables developers to develop AI-driven automations for Github projects.
 
 
 Get started now with our [User Guide](https://docs.pr-pilot.ai/user_guide.html).
 
-![PR Pilot](docs/source/img/overview.png)
+<img src="docs/source/img/overview.png" alt="PR Pilot" height="350">
 
 
 
 
 ### Automate your Github project in new and powerful ways
 
+#### Using **[Smart Actions](https://github.com/PR-Pilot-AI/smart-actions)**:
 
-Using the **[Python SDK](https://github.com/PR-Pilot-AI/pr-pilot-python)**:
+```yaml
+# .github/workflows/issue_formatter.yaml`
+
+name: Let AI Agent format and label every new issue
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  format-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Format GitHub Issue
+        uses: PR-Pilot-AI/smart-actions/format-issue@v1
+        with:
+
+          # API key for PR Pilot must be defined as a secret in the repository
+          api-key: ${{ secrets.PR_PILOT_API_KEY }}
+
+          # Number of the issue to be formatted
+          issue-number: ${{ github.event.issue.number }}
+
+          # Customize the instructions to your needs
+          formatting-instructions: |
+            - Ensure the title begins with an appropriate emoji
+            - Issue body should be properly Markdown-formatted
+            - If the issue has no labels, add some
+```
+
+#### Using the **[Python SDK](https://github.com/PR-Pilot-AI/pr-pilot-python)**:
 
 ```python
 import time
@@ -43,9 +73,7 @@ while task.status != "completed":
 print(f"Task completed. Result:\n\n{task.result}")
 ```
 
-See how we [combine PR Pilot with Github Actions](.github/workflows/ai_task_trigger.yml) to automate this project.
-
-You can also use the **[REST API](https://app.pr-pilot.ai/api/redoc/)** directly:
+#### Using the **[REST API](https://app.pr-pilot.ai/api/redoc/)**:
 
 ```bash 
 curl -X POST 'https://app.pr-pilot.ai/api/tasks/' \
@@ -57,7 +85,7 @@ curl -X POST 'https://app.pr-pilot.ai/api/tasks/' \
 }'
 ```
 
-or talk to PR Pilot directly on [Github issues and PRs](https://github.com/PR-Pilot-AI/pr-pilot/issues?q=label:demo+):
+#### or talk to PR Pilot directly on **[Github issues and PRs](https://github.com/PR-Pilot-AI/pr-pilot/issues?q=label:demo+)**:
 
 ![First pilot command](docs/source/img/first_command.png)
 
