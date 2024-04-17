@@ -125,7 +125,6 @@ def list_directory(path: str):
     if not node:
         TaskEvent.add(actor="assistant", action="list_directory", target=path, message=f"Directory not found `{path}`")
         return f"Directory not found: `{path}`"
-    TaskEvent.add(actor="assistant", action="list_directory", target=path, message=f"Listing directory `{path}`")
     directory_content = f"Content of `{path}`:\n\n"
     for child in node.nodes:
         # Replace the root path with an empty string
@@ -133,6 +132,7 @@ def list_directory(path: str):
         # Replace the directory path with an empty string
         clipped_path = clipped_path.replace(path, "").lstrip("/")
         directory_content += f"{clipped_path}\n"
+    TaskEvent.add(actor="assistant", action="list_directory", target=path, message=directory_content)
     return directory_content
 
 
