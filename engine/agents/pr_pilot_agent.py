@@ -23,6 +23,7 @@ from engine.langchain.cost_tracking import CostTrackerCallback
 from engine.models.task_event import TaskEvent
 from engine.models.task import Task
 from engine.project import Project
+from engine.util import replace_string_in_directory_path
 
 logger = logging.getLogger(__name__)
 
@@ -129,9 +130,9 @@ def list_directory(path: str):
     for child in node.nodes:
         # Replace the root path with an empty string
         clipped_path = str(child.path).replace(str(settings.REPO_DIR), "")
-        # Replace the directory path with an empty string
-        clipped_path = clipped_path.replace(path, "").lstrip("/")
-        directory_content += f"{clipped_path}\n"
+        # Replace the directory path with an empty string, leaving file name untouched
+        clipped_path = replace_string_in_directory_path(clipped_path, path, "").lstrip('/')
+        directory_content += f"- {clipped_path}\n"
     TaskEvent.add(actor="assistant", action="list_directory", target=path, message=directory_content)
     return directory_content
 

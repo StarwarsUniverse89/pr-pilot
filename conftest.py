@@ -13,8 +13,6 @@ def mock_chat_openai():
     with patch('langchain_openai.ChatOpenAI', new_callable=MagicMock) as mock:
         yield mock
 
-
-
 @pytest.fixture
 def task():
     task = Task.objects.create(

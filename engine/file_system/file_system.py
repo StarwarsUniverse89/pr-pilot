@@ -17,11 +17,13 @@ logger = logging.getLogger(__name__)
 class FileSystem:
     """Utility class for file system operations."""
 
-    def __init__(self, root_directory: Path = Path(settings.REPO_DIR)):
+    def __init__(self, root_directory=None):
+        if not root_directory:
+            root_directory = Path(settings.REPO_DIR)
         self.root_directory = root_directory
         if not self.root_directory.exists():
             raise FileNotFoundError(f"Root directory '{self.root_directory}' does not exist.")
-        self.root_directory = self.root_directory.resolve()
+        self.root_directory = self.root_directory
         self.tree = self._build_tree(self.root_directory)
 
     def yaml(self, filter="") -> str:
