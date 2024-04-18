@@ -13,7 +13,7 @@ def handle_app_deletion(payload):
     logger.info(f'Uninstalling app {app_id}')
     GitHubAppInstallation.objects.filter(installation_id=payload['installation']['id']).delete()
 
-    github_user = payload['installation']['account']['login']
+    github_user = payload['sender']['login']
 
     # Delete API keys for all repositories of this installation
     for repo in payload['repositories']:

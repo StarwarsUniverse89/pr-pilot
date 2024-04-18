@@ -36,9 +36,10 @@ def handle_app_installation(payload: dict):
         }
     )
     repositories_data = payload['repositories']
+    github_user = payload['sender']['login']
     for repo_data in repositories_data:
         logger.info(f'User {account.login} installed PR Pilot for repository {repo_data["full_name"]}')
-        install_repository(installation, repo_data, account.login)
+        install_repository(installation, repo_data, github_user)
 
     return JsonResponse({'status': 'success', 'installation_id': installation.installation_id})
 

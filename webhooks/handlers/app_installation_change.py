@@ -18,13 +18,14 @@ def handle_app_installation_change(payload: dict):
     if not installation:
         logger.error(f'Installation not found: {payload["installation"]["id"]}')
         return JsonResponse({'status': 'error', 'message': 'Installation not found'}, status=404)
+    github_user = payload['sender']['login']
     for repository in payload['repositories_removed']:
         try:
-            uninstall_repository(repository, installation.account.login)
+            uninstall_repository(repository, github_user)
         except GithubRepository.DoesNotExist:
             logger.error(f'Tried to delete repository {repository["full_name"]}, but not found')
             return JsonResponse({'status': 'error', 'message': 'Repository not found'}, status=404)
     for repository in payload['repositories_added']:
         logger.info(f'Repository {repository["full_name"]} added to installation {installation.installation_id}')
-        install_repository(installation, repository, installation.account.login)
+        install_repository(installation, repository, github_user)
     return JsonResponse({'status': 'success', 'installation_id': installation.installation_id})
