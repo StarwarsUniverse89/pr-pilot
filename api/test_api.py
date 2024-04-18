@@ -68,14 +68,28 @@ def test_create_task_via_api(api_key, github_repo):
 
 
 @pytest.mark.django_db
-def test_create_task_via_api_with_pr_number(api_key, github_repo):
+@patch('api.views.get_installation_access_token', return_value="test_token")
+@patch('api.views.Github')
+def test_create_task_via_api_with_pr_number(mock_github, mock_get_token, api_key, github_repo):
+    # Setting up the nested mock structure
+    mock_repo = MagicMock(default_branch="main", full_name="test/hello-world")
+    mock_pull = MagicMock(head=MagicMock(ref="feature-branch"), base=MagicMock(ref="main"))
+    mock_repo.get_pull.return_value = mock_pull
+    mock_github.return_value.get_repo.return_value = mock_repo
+
+    # Make the POST request
     response = client.post('/api/tasks/', {
         'prompt': 'Hello, World!',
         'github_repo': github_repo.full_name,
         'pr_number': 123,
     }, headers={'X-Api-Key': api_key}, format='json')
+
     assert response.status_code == 201
-    assert Task.objects.first().pr_number == 123
+    task = Task.objects.first()
+    assert task.pr_number == 123
+    assert task.github_project == github_repo.full_name
+    assert task.head == "feature-branch"
+    assert task.base == "main"
 
 
 @pytest.mark.django_db

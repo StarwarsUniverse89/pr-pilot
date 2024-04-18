@@ -1,4 +1,5 @@
 from drf_spectacular.utils import extend_schema, OpenApiExample, OpenApiResponse, inline_serializer
+from github import Github
 from rest_framework import status, serializers
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -7,6 +8,7 @@ from rest_framework_api_key.permissions import BaseHasAPIKey
 from api.models import UserAPIKey
 from api.serializers import PromptSerializer, TaskSerializer
 from engine.models.task import Task, TaskType
+from webhooks.jwt_tools import get_installation_access_token
 from webhooks.models import GithubRepository
 
 
@@ -61,10 +63,19 @@ def create_task(request):
             return Response({'error': 'PR Pilot is not installed for this repository'},
                             status=status.HTTP_404_NOT_FOUND)
 
+        pr_branch = None
+        pr_base = None
+        if serializer.validated_data.get('pr_number'):
+            g = Github(get_installation_access_token(repo.installation.installation_id))
+            pr = g.get_repo(repo.full_name).get_pull(serializer.validated_data['pr_number'])
+            pr_branch = pr.head.ref
+            pr_base = pr.base.ref
+
         task = Task.objects.create(title="A title", user_request=serializer.validated_data['prompt'],
                                    installation_id=repo.installation.installation_id, github_project=repo.full_name,
                                    issue_number=serializer.validated_data.get('issue_number'),
                                    pr_number=serializer.validated_data.get('pr_number'),
+                                   head=pr_branch, base=pr_base,
                                    task_type=TaskType.STANDALONE.value,
                                    github_user=github_user)
         task.schedule()
