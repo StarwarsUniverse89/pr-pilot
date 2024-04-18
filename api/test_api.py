@@ -38,14 +38,21 @@ def mock_github_client(github_project, mock_get_installation_access_token):
         yield
 
 
+@pytest.fixture
+def github_repo(github_project):
+    account = GitHubAccount.objects.create(account_id=1, login='test', avatar_url='http://example.com/avatar',
+                                           html_url='http://example.com')
+    installation = GitHubAppInstallation.objects.create(installation_id=123, app_id=1, target_id=1,
+                                                        target_type='Organization', account=account)
+    return GithubRepository.objects.create(id=1, full_name=github_project, name='hello-world',
+                                           installation=installation)
+
+
 @pytest.mark.django_db
-def test_create_task_via_api(api_key, github_project):
-    account = GitHubAccount.objects.create(account_id=1, login='test', avatar_url='http://example.com/avatar', html_url='http://example.com')
-    installation = GitHubAppInstallation.objects.create(installation_id=123, app_id=1, target_id=1, target_type='Organization', account=account)
-    repo = GithubRepository.objects.create(id=1, full_name=github_project, name='hello-world', installation=installation)
+def test_create_task_via_api(api_key, github_repo):
     response = client.post('/api/tasks/', {
         'prompt': 'Hello, World!',
-        'github_repo': github_project,
+        'github_repo': github_repo.full_name,
     }, headers={'X-Api-Key': api_key}, format='json')
     assert response.status_code == 201
     task = Task.objects.first()
@@ -53,9 +60,22 @@ def test_create_task_via_api(api_key, github_project):
     assert task.user_request == 'Hello, World!'
     assert task.status == 'scheduled'
     assert task.github_user == 'testuser'
-    assert task.github_project == github_project
-    assert task.installation_id == installation.installation_id
+    assert task.github_project == github_repo.full_name
+    assert task.installation_id == github_repo.installation.installation_id
+    assert not task.issue_number
+    assert not task.pr_number
     assert client.get(f'/api/tasks/{str(task.id)}/', headers={'X-Api-Key': api_key}).status_code == 200
+
+
+@pytest.mark.django_db
+def test_create_task_via_api_with_pr_number(api_key, github_repo):
+    response = client.post('/api/tasks/', {
+        'prompt': 'Hello, World!',
+        'github_repo': github_repo.full_name,
+        'pr_number': 123,
+    }, headers={'X-Api-Key': api_key}, format='json')
+    assert response.status_code == 201
+    assert Task.objects.first().pr_number == 123
 
 
 @pytest.mark.django_db

@@ -63,6 +63,8 @@ def create_task(request):
 
         task = Task.objects.create(title="A title", user_request=serializer.validated_data['prompt'],
                                    installation_id=repo.installation.installation_id, github_project=repo.full_name,
+                                   issue_number=serializer.validated_data.get('issue_number'),
+                                   pr_number=serializer.validated_data.get('pr_number'),
                                    task_type=TaskType.STANDALONE.value,
                                    github_user=github_user)
         task.schedule()
