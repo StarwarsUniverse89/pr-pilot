@@ -1,4 +1,5 @@
 import logging
+import os
 import shlex
 import subprocess
 from pathlib import Path
@@ -191,7 +192,7 @@ def search_github_code(query: str, sort: Optional[str], order: Optional[str]):
     return response
 
 @tool
-def search_with_ripgrep(search_pattern: str, file_type: str = None) -> str:
+def search_with_ripgrep(search_pattern: str, path: str, file_type: str = None) -> str:
     """
     Search for a pattern in files using ripgrep.
 
@@ -203,10 +204,12 @@ def search_with_ripgrep(search_pattern: str, file_type: str = None) -> str:
     Returns:
     A list of search results
     """
-    command = f"rg -n {shlex.quote(search_pattern)} {shlex.quote(str(settings.REPO_DIR))}"
+    search_path = os.path.join(settings.REPO_DIR, path)
+    command = f"rg -n {shlex.quote(search_pattern)} {shlex.quote(str(search_path))}"
     if file_type:
         command += f" -t {file_type}"
-    TaskEvent.add(actor="assistant", action="search_code", message=f"Searching code for pattern: `{search_pattern}`.")
+    TaskEvent.add(actor="assistant", action="search_code",
+                  message=f"Searching code for pattern: `{search_pattern}` in path `{path}`.")
     try:
         result = subprocess.run(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         if result.returncode == 0 and result.stdout:
