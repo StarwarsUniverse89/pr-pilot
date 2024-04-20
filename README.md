@@ -10,7 +10,7 @@
 </p>
 
 
-# 🤖 PR Pilot
+# PR Pilot
 
 A platform that enables developers to create agentic workflows for Github projects.
 
@@ -58,19 +58,12 @@ jobs:
 #### Using the **[Python SDK](https://github.com/PR-Pilot-AI/pr-pilot-python)**:
 
 ```python
-import time
-
-from pr_pilot.util import create_task, get_task
+from pr_pilot.util import create_task, wait_for_result
 
 github_repo = "PR-Pilot-AI/pr-pilot"
 task = create_task(github_repo, "Summarize the README file and create a Github issue with the result.")
-
-while task.status != "completed":
-    print(f"Waiting for task to complete. Status: {task.status}")
-    task = get_task(task.id)
-    time.sleep(5)
-    
-print(f"Task completed. Result:\n\n{task.result}")
+result = wait_for_result(task)
+print(result)
 ```
 
 #### Using the **[REST API](https://app.pr-pilot.ai/api/redoc/)**:

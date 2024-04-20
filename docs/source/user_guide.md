@@ -7,24 +7,47 @@ This guide will help you get started with PR Pilot and show you how to use it to
 
 ## Installation
 
-First, [install PR Pilot](https://github.com/apps/pr-pilot-ai) into your repository, then follow the instructions below to create and monitor tasks.
+If you haven't done so, [install PR Pilot](https://github.com/apps/pr-pilot-ai/installations/new) into your repository.
 
-## Creating Tasks
+## Automating your Project
 
-PR Pilot is a **text-to-task** platform, which means you simply describe what you want to do in natural language, and PR Pilot will take care of the rest using its [capabilities](./capabilities.md).
+Depending on your needs and skill level, you can use PR Pilot in different ways:
 
-You can give it new tasks in various ways.
+### Zero-Config, No-Code
 
-### Github Comments
+If you're new to AI and automation, you can use your **[Smart Project Template](https://github.com/PR-Pilot-AI/smart-project-template)** to get started.
+It comes with fully-customizable, no-code [Github workflows](https://docs.github.com/en/actions/using-workflows) out-of-the-box.
 
-To create a task, simply comment on an issue or PR with the `/pilot` command followed by a description of the task you want to perform.
+
+### Low-Code Smart Actions
+
+If you're comfortable with Github Actions and want to create your own automations, you can use our **[Smart Actions](https://github.com/PR-Pilot-AI/smart-actions)** to create your own workflows.
+These actions are hand-crafted using state-of-the-art prompt engineering techniques and let you automate your Github projects in powerful new ways.
 
 
-![First pilot command](img/first_command.png)
+### More Control: Python SDK
 
-The bot will turn your comment into a link to your [dashboard](https://app.pr-pilot.ai), where you can monitor the task's progress.
+To use PR Pilot in your own tools and integrations, you can use the [Python SDK](https://github.com/PR-Pilot-AI/pr-pilot-python):
 
-### API
+```bash
+pip install pr-pilot
+```
+
+Use the `create_task`, `get_task` and `wait_for_result` functions to automate your Github project:
+
+```python
+from pr_pilot.util import create_task, wait_for_result
+
+github_repo = "PR-Pilot-AI/pr-pilot"
+task = create_task(github_repo, "Summarize the README file and create a Github issue with the result.")
+result = wait_for_result(task)
+print(result)
+```
+
+The Python SDK works great for creating [powerful Github Actions](https://github.com/PR-Pilot-AI/smart-actions).
+
+
+### Using the REST API
 
 The PR Pilot API allows you to trigger tasks using your own tools and integrations.
 
@@ -43,74 +66,16 @@ curl -X POST 'https://app.pr-pilot.ai/api/tasks/' \
 ```
 
 
-### Python SDK
 
-Install the [Python SDK](https://github.com/PR-Pilot-AI/pr-pilot-python) using pip:
+### Talk to the Agent in Github Comments
 
-```bash
-pip install pr-pilot
-```
+PR Pilot will create issues and PRs for you. To stay in the flow, just use the `/pilot` command followed by a description of the task you want to perform.
 
-Use the `create_task` and `get_task` functions to automate your Github project:
 
-```python
-import time
+![First pilot command](img/first_command.png)
 
-from pr_pilot.util import create_task, get_task
+The bot will turn your comment into a link to your [dashboard](https://app.pr-pilot.ai), where you can monitor the task's progress.
 
-task = create_task("PR-Pilot-AI/pr-pilot", "Summarize the README file and create a Github issue with the result.")
-
-while task.status != "completed":
-    print(f"Waiting for task to complete. Status: {task.status}")
-    task = get_task(task.id)
-    time.sleep(5)
-    
-print(f"Task completed. Result:\n\n{task.result}")
-```
-
-The Python SDK works great for creating [powerful Github Actions](https://github.com/PR-Pilot-AI/pr-pilot/blob/main/.github/workflows/ai_task.py).
-
-### Github Actions
-
-You can create **[Smart Github Actions](https://github.com/PR-Pilot-AI/smart-actions)** by combining PR Pilot with Github Actions. 
-
-For example, you can use the `format-issue` action to ensure that every new issue is properly formatted and labeled:
-
-```yaml
-# .github/workflows/issue_formatter.yaml`
-
-name: Ensure new issue is properly formatted and labeled
-
-on:
-  issues:
-    types: [opened]
-
-jobs:
-  format-issue:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Format GitHub Issue
-        uses: PR-Pilot-AI/smart-actions/format-issue@v1
-        with:
-
-          # API key for PR Pilot must be defined as a secret in the repository
-          api-key: ${{ secrets.PR_PILOT_API_KEY }}
-
-          # Number of the issue to be formatted
-          issue-number: ${{ github.event.issue.number }}
-
-          # Customize the instructions to your needs
-          formatting-instructions: |
-            - Ensure the title begins with an appropriate emoji
-            - Issue body should be properly Markdown-formatted
-            - If the issue has no labels, add some
-```
-
-For your convenience, the `PR_PILOT_API_KEY` secret is set automatically on every project that uses PR Pilot.
-
-### Dashboard
-
-Soon you'll be able to create tasks directly from the [dashboard](https://app.pr-pilot.ai/dashboard/tasks/).
 
 ## Monitoring Tasks
 
