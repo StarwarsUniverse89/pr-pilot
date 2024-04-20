@@ -6,9 +6,7 @@
 PR Pilot Documentation
 ======================
 
-.. note:: PR Pilot is still in **early development**. Its future is shaped by your feedback. Please let us know what you think and what you would like to see next.
-
-PR Pilot is a **text-to-task platform** that enables GitHub developers to trigger AI-driven development tasks in their repositories from anywhere.
+A platform that enables developers to build agentic workflows for Github projects.
 
 .. image:: img/overview.png
    :alt: alternative text

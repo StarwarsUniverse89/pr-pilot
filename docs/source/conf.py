@@ -56,7 +56,7 @@ html_theme_options = {
         },
     ],
     "heroes": {
-        "index": "The text-to-task Platform for Github",
+        "index": "AI Automation for Github",
     },
 }
 html_sidebars = {
