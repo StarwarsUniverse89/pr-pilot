@@ -1,8 +1,9 @@
-from unittest.mock import patch, MagicMock, PropertyMock
+from unittest.mock import patch, MagicMock
 
 import pytest
 
 from engine.models.cost_item import CostItem
+from engine.models.task import Task
 
 
 @pytest.fixture(autouse=True)
@@ -38,13 +39,6 @@ def test_credits():
 
 
 @pytest.mark.django_db
-@pytest.mark.parametrize("permission,can_write", [("write", True), ("read", False), ("admin", True), ("none", False), ("", False),])
-def test_task_user_can_write(task, permission, can_write):
-    task.github.get_repo.return_value.get_collaborator_permission.return_value = permission
-    assert task.user_can_write() == can_write
-
-
-@pytest.mark.django_db
 def test_task_only_schedules_if_user_can_write(task):
     task.github.get_repo.return_value.get_collaborator_permission.return_value = "write"
     task.schedule()
@@ -55,3 +49,34 @@ def test_task_only_schedules_if_user_can_write(task):
     task.schedule()
     task.refresh_from_db()
     assert task.status == "failed"
+
+
+@pytest.mark.django_db
+def test_task_would_reach_rate_limit(task):
+    task.github_project = "test_user/test_project"
+    task.save()
+
+    # Create 8 tasks in the last 10 minutes
+    for i in range(8):
+        Task.objects.create(
+            github_project="test_user/test_project",
+            status="scheduled",
+            installation_id=123,
+            github_user="test_user",
+            title="Test Task",
+            user_request="Test Request",
+        )
+
+    assert not task.would_reach_rate_limit(), "The task should not reach the rate limit with 9 tasks in the last 10 minutes."
+
+    # Create another task
+    Task.objects.create(
+        github_project="test_user/test_project",
+        status="scheduled",
+        installation_id=123,
+        github_user="test_user",
+        title="Test Task",
+        user_request="Test Request",
+    )
+
+    assert task.would_reach_rate_limit(), "The task should reach the rate limit"

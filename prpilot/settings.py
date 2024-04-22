@@ -300,3 +300,6 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
     'X-Api-Key',
 ]
 CORS_ALLOW_ALL_ORIGINS = True
+
+TASK_RATE_LIMIT_WINDOW = 10  # Minutes
+TASK_RATE_LIMIT = 10  # per 10 minutes

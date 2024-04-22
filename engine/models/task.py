@@ -1,22 +1,19 @@
 import logging
-import os
-import threading
 import uuid
+from datetime import timedelta
 from enum import Enum
 from functools import lru_cache
 
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 from github import Github, GithubException
 
-from accounts.models import UserBudget
-from engine.job import KubernetesJob
 from engine.task_context.github_issue import GithubIssueContext
 from engine.task_context.pr_review_comment import PRReviewCommentContext
 from engine.task_context.task_context import TaskContext
-from engine.util import run_task_in_background
+from engine.task_scheduler import TaskScheduler
 from webhooks.jwt_tools import get_installation_access_token
-
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +48,16 @@ class Task(models.Model):
 
     def __str__(self):
         return self.title
+
+
+    def would_reach_rate_limit(self):
+        """Determine if the task would hit the rate limit for the project."""
+        tasks_created_in_last_10_minutes = Task.objects.filter(
+            github_project=self.github_project,
+            created__gte=timezone.now() - timedelta(minutes=settings.TASK_RATE_LIMIT_WINDOW)
+        )
+        return tasks_created_in_last_10_minutes.count() >= settings.TASK_RATE_LIMIT
+
 
     @property
     @lru_cache()
@@ -101,48 +108,7 @@ class Task(models.Model):
         else:
             return self.request_issue.get_comment(self.comment_id)
 
-    def user_budget_empty(self):
-        budget = UserBudget.get_user_budget(self.github_user)
-        return budget.budget <= 0
 
     def schedule(self):
-        self.context.acknowledge_user_prompt()
-        if self.user_budget_empty():
-            logger.info(f'User {self.github_user} has no budget')
-            self.context.respond_to_user(
-                "You have used up your budget. Please visit the [Dashboard](https://app.pr-pilot.ai) to purchase more credits.")
-            self.status = "failed"
-            self.save()
-            return
-
-        if not self.user_can_write():
-            message = f"Sorry @{self.github_user}, you must be a collaborator of `{self.github_project}` to run commands on this project."
-            self.context.respond_to_user(message)
-            self.status = "failed"
-            self.save()
-            return
-
-        if settings.JOB_STRATEGY == 'thread':
-            # In local development, just run the task in a background thread
-            settings.TASK_ID = self.id
-            os.environ["TASK_ID"] = str(self.id)
-            logger.info(f"Running task in debug mode: {self.id}")
-            thread = threading.Thread(target=run_task_in_background, args=(self.id,))
-            thread.start()
-        elif settings.JOB_STRATEGY == 'kubernetes':
-            # In production, run the task in a Kubernetes job
-            job = KubernetesJob(self)
-            job.spawn()
-        elif settings.JOB_STRATEGY == 'log':
-            # In testing, just log the task
-            logger.info(f"Running task in log mode: {self.id}")
-        else:
-            raise ValueError(f"Invalid JOB_STRATEGY: {settings.JOB_STRATEGY}")
-        self.status = "scheduled"
-        self.save()
-
-    def user_can_write(self) -> bool:
-        """Check if the user has write access to the repository"""
-        repo = self.github.get_repo(self.github_project)
-        permission = repo.get_collaborator_permission(self.github_user)
-        return permission == 'write' or permission == 'admin'
+        scheduler = TaskScheduler(self)
+        return scheduler.schedule()
