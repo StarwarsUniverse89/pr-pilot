@@ -24,7 +24,7 @@ Get started now with our [User Guide](https://docs.pr-pilot.ai/user_guide.html).
 
 ### Automate your Github project in new and powerful ways
 
-#### Using **[Smart Actions](https://github.com/PR-Pilot-AI/smart-actions)**:
+#### Using **[Smart Workflows](https://github.com/PR-Pilot-AI/smart-workflows)**:
 
 ```yaml
 # .github/workflows/issue_formatter.yaml`
