@@ -27,32 +27,32 @@ Get started now with our [User Guide](https://docs.pr-pilot.ai/user_guide.html).
 #### Using **[Smart Workflows](https://github.com/PR-Pilot-AI/smart-workflows)**:
 
 ```yaml
-# .github/workflows/issue_formatter.yaml`
+# .github/workflows/chat_bot.yaml`
 
-name: Let AI Agent format and label every new issue
+name: "🤖 My Project's Custom Chat Bot"
+
 on:
   issues:
-    types: [opened]
+    types: [labeled, commented]
+  issue_comment:
+    types: [created]
 
 jobs:
-  format-issue:
+  handle-chat:
+    if: >
+      (github.event.label.name == 'chat' || contains(github.event.issue.labels.*.name, 'chat')) &&
+      github.event.sender.login != 'pr-pilot-ai[bot]'
     runs-on: ubuntu-latest
     steps:
-      - name: Format GitHub Issue
-        uses: PR-Pilot-AI/smart-actions/format-issue@v1
+      - name: AI Chat Response
+        uses: PR-Pilot-AI/smart-actions/quick-task@v1
         with:
-
-          # API key for PR Pilot must be defined as a secret in the repository
           api-key: ${{ secrets.PR_PILOT_API_KEY }}
-
-          # Number of the issue to be formatted
-          issue-number: ${{ github.event.issue.number }}
-
-          # Customize the instructions to your needs
-          formatting-instructions: |
-            - Ensure the title begins with an appropriate emoji
-            - Issue body should be properly Markdown-formatted
-            - If the issue has no labels, add some
+          agent-instructions: |
+              @${{ github.event.sender.login }} commented on issue #${{ github.event.issue.number }}.
+              Read the content of issue #${{ github.event.issue.number }}.
+              If there are no comments yet, add a comment that makes sense in the context of the issue.
+              If there are comments, provide a response to the latest comment.
 ```
 
 #### Using the **[Python SDK](https://github.com/PR-Pilot-AI/pr-pilot-python)**:
