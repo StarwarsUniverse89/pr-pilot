@@ -14,3 +14,4 @@ local.env
 nginx
 volumes
 embedEtcd.yaml
+helm-chart

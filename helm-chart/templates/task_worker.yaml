@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: worker
-        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        image: {{ .Values.image.worker }}:{{ .Values.image.tag }}
         imagePullPolicy: Always
         resources:
           limits:
@@ -27,20 +27,20 @@ spec:
             memory: "200Mi"
             cpu: "0.2"
         command: ["python", "manage.py"]
-        args: ["task_worker"]
+        args: ["run_task_worker"]
         env:
         - name: GITHUB_APP_PRIVATE_KEY_PATH
           value: "/etc/ssl/certs/github_private_key.pem"
         - name: REDIS_HOST
-          value: "redis"
+          value: "pr-pilot-redis-master.default.svc.cluster.local"
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
               name: pr-pilot-db-postgresql
               key: postgres-password
-          envFrom:
-            - secretRef:
-                name: pr-pilot-secret
+        envFrom:
+        - secretRef:
+            name: pr-pilot-secret
         volumeMounts:
           - name: pem-volume
             mountPath: /etc/ssl/certs/github_private_key.pem
