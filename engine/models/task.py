@@ -70,11 +70,17 @@ class Task(models.Model):
             raise ValueError(f"Invalid task type: {self.task_type}")
 
     @staticmethod
-    @lru_cache()
     def current() -> 'Task':
         if not settings.TASK_ID:
             raise ValueError("TASK_ID is not set")
-        return Task.objects.get(id=settings.TASK_ID)
+        return Task.get(settings.TASK_ID)
+
+    @staticmethod
+    @lru_cache()
+    def get(task_id: str) -> 'Task':
+        if not settings.TASK_ID:
+            raise ValueError("TASK_ID is not set")
+        return Task.objects.get(id=task_id)
 
     @property
     @lru_cache()
