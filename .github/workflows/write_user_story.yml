@@ -32,5 +32,6 @@ jobs:
             - Value of the story to the user
             - List of checkbox acceptance criteria
             
-            1. Search the code or internet for relevant context and read it
-            2. Open a new issue containing the full, comprehensive user story and label it `user-story`
+            1. Search the code for relevant classes, keywords, etc
+            2. If you found relevant files, read and understand them in the context of the story
+            3. Open a new issue containing the full, comprehensive user story and label it `user-story`
