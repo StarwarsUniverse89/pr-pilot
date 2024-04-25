@@ -1,6 +1,7 @@
 import logging
 import os
 import threading
+import redis
 
 from accounts.models import UserBudget
 from engine.job import KubernetesJob
@@ -16,6 +17,7 @@ class TaskScheduler:
     def __init__(self, task):
         self.task = task
         self.context = self.task.context
+        self.redis_queue = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=0)
 
 
     def user_budget_empty(self):
@@ -61,7 +63,6 @@ class TaskScheduler:
             self.task.status = "failed"
             self.task.save()
             return
-
         if settings.JOB_STRATEGY == 'thread':
             # In local development, just run the task in a background thread
             settings.TASK_ID = self.task.id
@@ -76,7 +77,12 @@ class TaskScheduler:
         elif settings.JOB_STRATEGY == 'log':
             # In testing, just log the task
             logger.info(f"Running task in log mode: {self.task.id}")
+        elif settings.JOB_STRATEGY == 'redis':
+            logger.info(f"Scheduling task via Redis: {self.task.id}")
+            self.redis_queue.rpush(settings.REDIS_QUEUE, str(self.task.id))
         else:
             raise ValueError(f"Invalid JOB_STRATEGY: {settings.JOB_STRATEGY}")
+            
         self.task.status = "scheduled"
         self.task.save()
+
