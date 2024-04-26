@@ -27,3 +27,4 @@ jobs:
             - Issue body should have `Technical Details` part with bullet points that will make it easier to implement the issue
             - Issue body should have a `Scope` part which clearly defines which files/code need to be changed and how
             - Issue title should start with an emoji 
+            - Remove the `needs-refinement` label
