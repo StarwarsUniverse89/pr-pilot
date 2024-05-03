@@ -12,7 +12,9 @@
 
 # PR Pilot
 
-A platform that enables developers to create **[agentic workflows](https://github.com/PR-Pilot-AI/smart-workflows)** for Github projects.
+An AI agent for your Github project.
+
+The agent can search and manipulate the code base, browse the internet and interact with Github issues and pull requests. Developers can hand off manual, repetitive parts of their daily work to PR Pilot using Github Actions or integrate it into their own tools using the API and SDK.
 
 
 Get started now with our [User Guide](https://docs.pr-pilot.ai/user_guide.html).
