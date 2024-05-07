@@ -45,6 +45,4 @@ jobs:
 
             ---
             
-            The user can customize the workflow by commenting with `/pilot <change-request-for-workflow>` on the PR. 
-            Read the `README.md` file to learn more about the project, then respond to the user with a few prompt 
-            suggestions.
+            Respond to the user with a few suggestions how the user may customize the workflow file in useful ways.
