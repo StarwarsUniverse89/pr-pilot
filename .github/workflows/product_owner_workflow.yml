@@ -8,7 +8,7 @@ on:
 jobs:
   product-owner:
     runs-on: ubuntu-latest
-    if: "github.event.label.name == 'feature-request'"
+    if: "github.event.label.name == 'feature request'"
     steps:
       - name: Act as Product Owner
         uses: PR-Pilot-AI/smart-actions/quick-task@v1
