@@ -17,9 +17,9 @@ build-static:
 	python manage.py collectstatic --no-input
 
 build-docker: build-static
-	docker build -t $(APP_IMAGE_NAME):$(VERSION) .
-	docker build -t $(WORKER_IMAGE_NAME):$(VERSION) -f Dockerfile.worker .
-	docker build -t $(NGINX_IMAGE_NAME):$(VERSION) -f nginx/Dockerfile nginx
+	docker build --platform linux/amd64 -t $(APP_IMAGE_NAME):$(VERSION) .
+	docker build --platform linux/amd64 -t $(WORKER_IMAGE_NAME):$(VERSION) -f Dockerfile.worker .
+	docker build --platform linux/amd64 -t $(NGINX_IMAGE_NAME):$(VERSION) -f nginx/Dockerfile nginx
 
 # Docker Push
 docker-push: build-docker
