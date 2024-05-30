@@ -245,26 +245,23 @@ def search_github_code(query: str, sort: Optional[str], order: Optional[str]):
 
 
 @tool
-def search_with_ripgrep(search_pattern: str, path: str, file_type: str = None) -> str:
+def search_with_ripgrep(search_regex: str, glob: str) -> str:
     """
-    Search for a text pattern in the contents of files using ripgrep.
+    Search the code base content for a text pattern using ripgrep.
 
     Args:
-    - search_pattern: Text pattern used for searching file contents (NO file names!).
-    - path: The file system path to search within. Can be a file or a directory.
-    - file_type: Optionally, a file type to limit the search to (e.g., 'py' for Python files).
+    - search_regex: Regex pattern used for searching file contents (e.g. 'def function_name', '\b\w*Controller\b')
+    - glob: Glob pattern to limit the search to specific files / directories (e.g., 'src' or '*.{c,h}').
 
     Returns:
     A list of search results
     """
-    search_path = os.path.join(settings.REPO_DIR, path)
-    command = f"rg -n {shlex.quote(search_pattern)} {shlex.quote(str(search_path))}"
-    if file_type:
-        command += f" -t {file_type}"
+    search_path = os.path.join(settings.REPO_DIR, glob)
+    command = f"rg -n {shlex.quote(search_regex)} {shlex.quote(str(search_path))}"
     TaskEvent.add(
         actor="assistant",
         action="search_code",
-        message=f"Searching code for pattern: `{search_pattern}` in path `{path}`.",
+        message=f"Searching code for pattern: `{search_regex}` in `{glob}`.",
     )
     try:
         result = subprocess.run(
