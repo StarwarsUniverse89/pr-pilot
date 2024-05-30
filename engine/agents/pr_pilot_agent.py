@@ -247,11 +247,11 @@ def search_github_code(query: str, sort: Optional[str], order: Optional[str]):
 @tool
 def search_with_ripgrep(search_pattern: str, path: str, file_type: str = None) -> str:
     """
-    Search for a pattern in files using ripgrep.
+    Search for a text pattern in the contents of files using ripgrep.
 
     Args:
-    - search_pattern: The regex pattern to search for.
-    - path: The path to search within. Can be a file or a directory.
+    - search_pattern: Text pattern used for searching file contents (NO file names!).
+    - path: The file system path to search within. Can be a file or a directory.
     - file_type: Optionally, a file type to limit the search to (e.g., 'py' for Python files).
 
     Returns:
