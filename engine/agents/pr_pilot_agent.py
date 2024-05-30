@@ -54,7 +54,8 @@ Your job is to fulfill the user request autonomously and provide the response.
 All issues, PR, files and code you have access to are in the context of the `{github_project}` repository.
 
 # How to handle user requests
-- If the user mentions classes, methods, etc in the code, you can find them using the `search_with_ripgrep` function
+- If the user mentions files, you can read them using the `read_files` function
+- If the user mentions classes, methods, etc in the code, you can find them using the `search_for_code_snippets` function
 - If necessary, search the internet to make sure your answers are accurate
 - Keep your answers short and to the point, unless the user asks for a detailed explanation
 - If your answer is based on internet research, make sure to mention the source
@@ -245,16 +246,19 @@ def search_github_code(query: str, sort: Optional[str], order: Optional[str]):
 
 
 @tool
-def search_with_ripgrep(search_regex: str, glob: str) -> str:
+def search_for_code_snippets(search_regex: str, glob: str) -> str:
     """
-    Search the code base content for a text pattern using ripgrep.
+    Search the code base for a specific regex pattern.
 
     Args:
     - search_regex: Regex pattern used for searching file contents (e.g. 'def function_name', '\b\w*Controller\b')
     - glob: Glob pattern to limit the search to specific files / directories (e.g., 'src' or '*.{c,h}').
 
     Returns:
-    A list of search results
+    A list of code snippets and their location in the code base.
+
+    Note:
+        - Do NOT use file names in the `search_regex` parameter. Use the `glob` parameter to limit the search to specific files.
     """
     search_path = os.path.join(settings.REPO_DIR, glob)
     command = f"rg -n {shlex.quote(search_regex)} {shlex.quote(str(search_path))}"
@@ -270,13 +274,15 @@ def search_with_ripgrep(search_regex: str, glob: str) -> str:
             stderr=subprocess.PIPE,
             text=True,
         )
-        if result.returncode == 0 and result.stdout:
+        if result.returncode == 0:
+            if not result.stdout:
+                return f"No matches found for pattern `{search_regex}` in `{glob}`."
             result = result.stdout.strip()
             root_path_replaced = result.replace(str(settings.REPO_DIR), "")
             max_100_lines = root_path_replaced.split("\n")[:150]
             return "\n".join(max_100_lines)
         else:
-            return "No matches found or an error occurred."
+            return "An error occurred." + result.stderr
     except Exception as e:
         return f"An error occurred while running ripgrep: {e}"
 
@@ -367,7 +373,7 @@ def create_pr_pilot_agent(gpt_model=settings.DEFAULT_GPT_MODEL):
         write_file,
         read_files,
         list_directory,
-        search_with_ripgrep,
+        search_for_code_snippets,
         search_github_issues,
         edit_github_issue,
         copy_file,
